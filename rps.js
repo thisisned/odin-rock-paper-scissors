@@ -33,7 +33,6 @@ function playRound(human, computer) {
             break;
         case "tie":
             console.log("It's a tie! You both chose " + human);
-            break; 
     }
     return result;
 }
@@ -41,7 +40,7 @@ function playRound(human, computer) {
 function game() {
     let playerScore = 0;
     let compScore = 0;
-    for (let round = 0; round < 5; round++) {
+    while (playerScore < 5 && compScore < 5) {
         console.log("Current score: Human: " + playerScore + " | Computer: " + compScore);
         let roundResult = playRound(humanPlay(), computerPlay());
         if (roundResult === "win") playerScore++;
@@ -49,10 +48,8 @@ function game() {
     }
     console.log("---------------------");
     console.log("Final result:");
-    if (playerScore === compScore) console.log("It's a tie! " + playerScore + " all.");
-    else {
-        playerScore > compScore ? console.log("You win! " + playerScore + " to " + compScore) : console.log("You lose! " + compScore + " to " + playerScore);
-    }
+    playerScore > compScore ? console.log("You win! " + playerScore + " to " + compScore) : console.log("You lose! " + compScore + " to " + playerScore);
+
 }
 
 game();
