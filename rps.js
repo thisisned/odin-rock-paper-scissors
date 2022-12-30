@@ -1,25 +1,21 @@
+// Initialisation
+
 const choices = ["rock", "paper", "scissors"];
 let playerScore = 0;
 let compScore = 0;
-let gameOver = false;
+const newGameButton = document.querySelector('#new-game');
+newGameButton.style.display = "none";
+const hScore = document.querySelector('#human-score');
+const cScore = document.querySelector('#computer-score');
+const buttons = document.querySelectorAll('.button');
 
+// Computer chooses a random option
 function computerPlay() {
     let compChoice = choices[Math.floor(Math.random() * choices.length)];
     return compChoice;
 }
 
-// function humanPlay() {
-//     let valid = false;
-//     let humanChoice;
-//     while (!valid) {
-//         humanChoice = prompt("Rock, paper, or scissors?").toLowerCase();
-//         if (choices.includes(humanChoice)) {
-//             valid = true;
-//         }
-//     }
-//     return humanChoice;
-// }
-
+// Main game logic 
 function playRound(human, computer) {
     let result;
     let message;
@@ -40,39 +36,27 @@ function playRound(human, computer) {
         case "tie":
             message = "It's a tie! You both chose " + human;
     }
+
+    // Adds commentary text to UI
     const para = document.createElement('p');
     const text = document.createTextNode(message);
     para.appendChild(text);
     document.getElementById("commentary").appendChild(para);
-
-    
-    // Create p node, change innerText to above, appendChild to div
-    console.log("Current score: Human: " + playerScore + " | Computer: " + compScore);
     return result;
 }
 
-// function game() {
-//     let playerScore = 0;
-//     let compScore = 0;
-//     while (playerScore < 5 && compScore < 5) {
-//         console.log("Current score: Human: " + playerScore + " | Computer: " + compScore);
-//         let roundResult = playRound(humanPlay(), computerPlay());
-//         if (roundResult === "win") playerScore++;
-//         else if (roundResult === "lose") compScore++;
-//     }
-//     console.log("---------------------");
-//     console.log("Final result:");
-//     playerScore > compScore ? console.log("You win! " + playerScore + " to " + compScore) : console.log("You lose! " + compScore + " to " + playerScore);
-// }
+// Displays final result and disables / displays appropriate buttons
+function endGame() {
+    let winnerText = playerScore > compScore ? "You win! " + playerScore + " to " + compScore : "You lose! " + compScore + " to " + playerScore;
+    const para = document.createElement('h1');
+    const text = document.createTextNode(winnerText);
+    para.appendChild(text);
+    document.getElementById("result").appendChild(para);
+    buttons.forEach(button => button.disabled = true);
+    newGameButton.style.display = "block";
+}
 
-const newGameButton = document.querySelector('#new-game');
-newGameButton.style.display = "none";
-
-const hScore = document.querySelector('#human-score');
-const cScore = document.querySelector('#computer-score');
-
-const buttons = document.querySelectorAll('.button');
-buttons.forEach(button => button.disabled = false);
+// Button choice click event
 buttons.forEach(button => button.addEventListener("click", function () {
     playRound(this.id, computerPlay());
     hScore.textContent = playerScore;
@@ -82,10 +66,15 @@ buttons.forEach(button => button.addEventListener("click", function () {
     }
 }));
 
-function endGame() {
-    console.log("---------------------");
-    console.log("Final result:");
-    playerScore > compScore ? console.log("You win! " + playerScore + " to " + compScore) : console.log("You lose! " + compScore + " to " + playerScore);
-    buttons.forEach(button => button.disabled = true);
-    newGameButton.style.display = "block";
-}
+// New game button resets everything
+newGameButton.addEventListener("click", function() {
+    playerScore = 0;
+    compScore = 0;
+    hScore.textContent = playerScore;
+    cScore.textContent = compScore;
+    buttons.forEach(button => button.disabled = false);
+    document.getElementById("commentary").replaceChildren();
+    document.getElementById("result").replaceChildren();
+
+    newGameButton.style.display = "none";
+});
