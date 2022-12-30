@@ -22,6 +22,7 @@ function computerPlay() {
 
 function playRound(human, computer) {
     let result;
+    let message;
     if (human === "rock" && computer === "scissors") result = "win";
     else if (human === "paper" && computer === "rock") result = "win";
     else if (human === "scissors" && computer === "paper") result = "win";
@@ -29,16 +30,23 @@ function playRound(human, computer) {
     else result = "lose";
     switch (result) {
         case "win":
-            console.log("You win! " + human + " beats " + computer + ".");
+            message = "You win! " + human + " beats " + computer + ".";
             playerScore++;
             break;
         case "lose":
-            console.log("You lose! " + computer + " beats " + human + ".");
+            message = "You lose! " + computer + " beats " + human + ".";
             compScore++;
             break;
         case "tie":
-            console.log("It's a tie! You both chose " + human);
+            message = "It's a tie! You both chose " + human;
     }
+    const para = document.createElement('p');
+    const text = document.createTextNode(message);
+    para.appendChild(text);
+    document.getElementById("commentary").appendChild(para);
+
+    
+    // Create p node, change innerText to above, appendChild to div
     console.log("Current score: Human: " + playerScore + " | Computer: " + compScore);
     return result;
 }
@@ -57,10 +65,13 @@ function playRound(human, computer) {
 //     playerScore > compScore ? console.log("You win! " + playerScore + " to " + compScore) : console.log("You lose! " + compScore + " to " + playerScore);
 // }
 
+const newGameButton = document.querySelector('#new-game');
+newGameButton.style.display = "none";
+
 const hScore = document.querySelector('#human-score');
 const cScore = document.querySelector('#computer-score');
 
-const buttons = document.querySelectorAll('button');
+const buttons = document.querySelectorAll('.button');
 buttons.forEach(button => button.disabled = false);
 buttons.forEach(button => button.addEventListener("click", function () {
     playRound(this.id, computerPlay());
@@ -76,4 +87,5 @@ function endGame() {
     console.log("Final result:");
     playerScore > compScore ? console.log("You win! " + playerScore + " to " + compScore) : console.log("You lose! " + compScore + " to " + playerScore);
     buttons.forEach(button => button.disabled = true);
+    newGameButton.style.display = "block";
 }
