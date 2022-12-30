@@ -52,4 +52,10 @@ function game() {
 
 }
 
-game();
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener("click", function() {
+    playRound(this.id, computerPlay());
+    // console.log(computerPlay());
+}));
+
+// game();
